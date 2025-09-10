@@ -1,38 +1,41 @@
-<!-- File: index.html -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Random Sound Buttons</title>
-<link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Calculator</title>
+  <link rel="stylesheet" href="Untitled-1.css" />
 </head>
 <body>
-<main class="app">
-<header class="header">
-<h1>Random Sound Buttons</h1>
-<p class="sub">Click any button to play a random sound. Use the controls to change how many buttons appear and the style of randomness.</p>
-<div class="controls">
-<label>Buttons: <input id="btnCount" type="range" min="4" max="24" value="12" /></label>
-<label>Volume: <input id="masterGain" type="range" min="0" max="1" step="0.01" value="0.7" /></label>
-<button id="regen">Regenerate Buttons</button>
-<button id="randomizeAll">Randomize Look</button>
-<button id="stopAll">Stop All</button>
-</div>
-</header>
+  <div class="calculator">
+    <input type="text" id="display" disabled />
+    <div class="buttons">
+      <button class="clear">C</button>
+      <button>(</button>
+      <button>)</button>
+      <button class="operator">/</button>
 
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button class="operator">*</button>
 
-<section id="grid" class="grid" aria-live="polite">
-<!-- Buttons will be generated here -->
-</section>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button class="operator">-</button>
 
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button class="operator">+</button>
 
-<footer class="footer">
-<small>Built with the Web Audio API — no external sounds required.</small>
-</footer>
-</main>
+      <button>0</button>
+      <button>.</button>
+      <button class="equals">=</button>
+    </div>
+  </div>
 
-
-<script src="script.js"></script>
+  <script src="Untitled-2.js"></script>
 </body>
 </html>
