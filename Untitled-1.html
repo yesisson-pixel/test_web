@@ -1,169 +1,38 @@
-<!DOCTYPE html>
+<!-- File: index.html -->
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Flappy Bird Game</title>
-    <style>
-        body {
-            background: #70c5ce;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        #gameCanvas {
-            background: #fff;
-            display: block;
-            margin: 40px auto;
-            border: 2px solid #333;
-        }
-        #score {
-            font-size: 2em;
-            color: #333;
-            margin-top: 10px;
-        }
-        #startBtn {
-            padding: 10px 20px;
-            font-size: 1em;
-            background: #ffeb3b;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        #startBtn:hover {
-            background: #fbc02d;
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Random Sound Buttons</title>
+<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <h1>Flappy Bird</h1>
-    <canvas id="gameCanvas" width="400" height="600"></canvas>
-    <div id="score">Score: 0</div>
-    <button id="startBtn">Start Game</button>
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const scoreDisplay = document.getElementById('score');
-        const startBtn = document.getElementById('startBtn');
+<main class="app">
+<header class="header">
+<h1>Random Sound Buttons</h1>
+<p class="sub">Click any button to play a random sound. Use the controls to change how many buttons appear and the style of randomness.</p>
+<div class="controls">
+<label>Buttons: <input id="btnCount" type="range" min="4" max="24" value="12" /></label>
+<label>Volume: <input id="masterGain" type="range" min="0" max="1" step="0.01" value="0.7" /></label>
+<button id="regen">Regenerate Buttons</button>
+<button id="randomizeAll">Randomize Look</button>
+<button id="stopAll">Stop All</button>
+</div>
+</header>
 
-        let bird = { x: 50, y: 300, width: 30, height: 30, velocity: 0 };
-        let gravity = 0.6;
-        let lift = -10;
-        let pipes = [];
-        let score = 0;
-        let gameOver = false;
-        let gameStarted = false;
 
-        function resetGame() {
-            bird.y = 300;
-            bird.velocity = 0;
-            pipes = [];
-            score = 0;
-            scoreDisplay.textContent = 'Score: 0';
-            gameOver = false;
-        }
+<section id="grid" class="grid" aria-live="polite">
+<!-- Buttons will be generated here -->
+</section>
 
-        function drawBird() {
-            ctx.fillStyle = '#ffeb3b';
-            ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
-            ctx.strokeStyle = '#333';
-            ctx.strokeRect(bird.x, bird.y, bird.width, bird.height);
-        }
 
-        function drawPipes() {
-            ctx.fillStyle = '#388e3c';
-            pipes.forEach(pipe => {
-                ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
-                ctx.fillRect(pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom);
-            });
-        }
+<footer class="footer">
+<small>Built with the Web Audio API — no external sounds required.</small>
+</footer>
+</main>
 
-        function updatePipes() {
-            if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - 200) {
-                let top = Math.random() * 250 + 50;
-                let gap = 150;
-                pipes.push({
-                    x: canvas.width,
-                    width: 50,
-                    top: top,
-                    bottom: canvas.height - top - gap,
-                    passed: false
-                });
-            }
-            pipes.forEach(pipe => {
-                pipe.x -= 2;
-            });
-            if (pipes.length && pipes[0].x + pipes[0].width < 0) {
-                pipes.shift();
-            }
-        }
 
-        function checkCollision() {
-            if (bird.y < 0 || bird.y + bird.height > canvas.height) {
-                return true;
-            }
-            for (let pipe of pipes) {
-                if (
-                    bird.x < pipe.x + pipe.width &&
-                    bird.x + bird.width > pipe.x &&
-                    (bird.y < pipe.top || bird.y + bird.height > canvas.height - pipe.bottom)
-                ) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        function updateScore() {
-            pipes.forEach(pipe => {
-                if (!pipe.passed && pipe.x + pipe.width < bird.x) {
-                    score++;
-                    pipe.passed = true;
-                    scoreDisplay.textContent = 'Score: ' + score;
-                }
-            });
-        }
-
-        function gameLoop() {
-            if (!gameStarted) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            bird.velocity += gravity;
-            bird.y += bird.velocity;
-
-            drawBird();
-            updatePipes();
-            drawPipes();
-            updateScore();
-
-            if (checkCollision()) {
-                gameOver = true;
-                gameStarted = false;
-                scoreDisplay.textContent += ' - Game Over!';
-                startBtn.style.display = 'inline-block';
-                return;
-            }
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        document.addEventListener('keydown', function(e) {
-            if (e.code === 'Space' && !gameOver && gameStarted) {
-                bird.velocity = lift;
-            }
-        });
-
-        startBtn.addEventListener('click', function() {
-            resetGame();
-            startBtn.style.display = 'none';
-            gameStarted = true;
-            gameLoop();
-        });
-
-        // Initial state
-        startBtn.style.display = 'inline-block';
-    </script>
+<script src="script.js"></script>
 </body>
 </html>
